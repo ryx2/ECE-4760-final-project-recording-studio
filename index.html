@@ -22,15 +22,20 @@
 			<nav id="menu">
 				<ul class="links">
 					<li><a href="index.html">Intro</a></li>
-					<li><a href="generic.html">High Level Design</a></li>
-					<li><a href="elements.html">Hardware Design</a></li>
-					<li><a href="elements.html">Software Design</a></li>
-					<li><a href="elements.html">Sound Files</a></li>
-					<li><a href="elements.html">Header</a></li>
-					<li><a href="elements.html">Brainstorm</a></li>
-					<li><a href="elements.html">Results</a></li>
-					<li><a href="elements.html">Conclusion</a></li>
-					<li><a href="elements.html">Appendix</a></li>
+					<li><a href="#highLevel">High Level Design</a></li>
+					<li><a href="#hardware">Hardware Design</a></li>
+					<li><a href="#software">Software Design</a>
+						<ul class="links">
+							<li><a href="#sounds">Sound Files</a></li>
+							<li><a href="#header">Header File</a></li>
+							<li><a href="#brainstorm">Software Breakdown</a></li>
+
+						</ul>
+					</li>
+					<li><a href="#results">Results</a></li>
+					<li><a href="#conclusion">Conclusion</a></li>
+					<li><a href="#appendix">Appendix</a></li>
+					<li><a href="#ack">Acknowledgements</a></li>
 				</ul>
 			</nav>
 
@@ -79,7 +84,7 @@
 								<p style="color:#000">
 									We built a miniature recording studio using the PIC32 that allows the user to record a short soundtrack, play it back, then layer on additional sounds. We chose to support sounds for three tonal instruments: piano, guitar, and bass, as well as eight unique drum sounds. The user can play a full octave on each of these instruments, but not flats or sharps. This design choice balances the limited capabilities of the PIC32 with giving the user the ability to create complex sounds. We also have a microphone that the user can use to record custom sounds. The user can use the recording and playback modes separately. While recording, the notes played by the user are saved to be played back, and in playback mode the recorded sounds are played through a speaker to the user. The user can also playback and record at the same time. The system synchronizes the two if they are happening at the same time so that the playback begins while the system starts recording. If the user starts recording during a playback, the current playback finishes, and the recording starts at the beginning of the next playback. If the user starts recording while not playing back, there is a countdown from 3 to allow the user to prepare before the recording starts. In addition to the progress bar, which shows the progress through a recording or playback, we also have a small red circle that displays when we are recording. There is also support for deleting the current recording allowing the user to start a new song without resetting the whole studio. The recording studio also has a visual component in a menu that indicates to the user what instrument they are using, toggling playback mode, and deleting the current recording. Recording mode is toggled by a separate button which starts recording with any of the instruments or the microphone mode selected.  The recording studio can save about 2 seconds of sound, which allows the user to record a full four beats at 120 beats per minute. This gives the user enough time to create interesting layered sounds.
 
-								<div class="image fit" align="middle"><img src="images/project-middle.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/project-middle.jpg" style="width: 75%; height: 75%"></div>
 								</p>
 								<hr />
 							</div>
@@ -88,7 +93,7 @@
 				</div>
 			</section>
 <!-- high level design -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="highLevel" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
@@ -112,8 +117,8 @@
 					</div>
 				</div>
 			</section>
-<!-- Software design -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+<!-- Hardware design -->
+			<section id="software" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
@@ -123,7 +128,28 @@
 								</header>
 								
 								<p style="color:#000">
-									<div class="image fit" align="middle"><img src="images/software.jpg"></div>
+									<div class="image fit" align="middle"><img src="images/software.jpg" style="width: 50%; height: 50%"></div>
+									To create our sounds, we saved sound files as a single array and wrote the data of the array to the built-in DAC of our development board. The DAC output was connected to the speaker as outlined in the hardware design section. The vast majority of our code was in the file brainstorm.c. In this file, we get input from the user and then play the appropriate sounds using SPI in an ISR. This separation of code into header files made it easier to change our sound files during development as we found ourselves frequently editing the sound array. The following subsections describe in more detail the purpose of each file and how they work.
+								</p>
+								<hr />
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+<!-- Software design -->
+			<section id="software" class="wrapper style2" style="padding: 3px">
+				<div class="inner">
+					<div>
+						<div class="box">
+							<div class="content">
+								<header class="align-center">
+									<h2>Software design</h2>
+								</header>
+								
+								<p style="color:#000">
+									<div class="image fit" align="middle"><img src="images/software.jpg" style="width: 50%; height: 50%"></div>
 									To create our sounds, we saved sound files as a single array and wrote the data of the array to the built-in DAC of our development board. The DAC output was connected to the speaker as outlined in the hardware design section. The vast majority of our code was in the file brainstorm.c. In this file, we get input from the user and then play the appropriate sounds using SPI in an ISR. This separation of code into header files made it easier to change our sound files during development as we found ourselves frequently editing the sound array. The following subsections describe in more detail the purpose of each file and how they work.
 								</p>
 								<hr />
@@ -133,7 +159,7 @@
 				</div>
 			</section>
 <!-- Sound file generation -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="sound" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
@@ -141,7 +167,7 @@
 								<header class="align-center">
 									<h2>Sound file generation</h2>
 								</header>
-								<div class="image fit" align="middle"><img src="images/sound.jpg"></div>
+								<div class="image fit" align="middle"><img src="images/sound.jpg" style="width: 50%; height: 50%"></div>
 								<p style="color:#000">
 									We searched YouTube for people playing C major scales with guitar, piano, and bass. These notes were then clipped to a relatively short length (about 0.05 seconds), and then put on repeat for playback on the device. For the drums, 8 different diverse drum sounds were selected, about 0.5 seconds each, and when in drum mode they are played once.  
 								</p>
@@ -154,16 +180,17 @@
 					</div>
 				</div>
 			</section>
+
 <!-- header -->
-<section id="one" class="wrapper style2" style="padding: 3px">
+<section id="headerFile" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
 							<div class="content">
 								<header class="align-center">
-									<h2>Header files</h2>
+									<h2>Header Files</h2>
 								</header>
-								<div class="image fit" align="middle"><img src="images/wavloc.jpg"></div>
+								<div style= "text-align:center;"><img src="images/wavloc.jpg" style="width: 50%; height: 50%" alt=""></div>
 								<p style="color:#000">
 									The project then plays the sounds as defined in the header files. Our project includes 2 different header files.  
 									<ul>
@@ -188,7 +215,7 @@
 				</div>
 			</section>
 			<!-- code breakdown -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="brainstorm" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
@@ -312,7 +339,7 @@ There were very few changes made to main because we have done most of the initia
 				</div>
 			</section>
 			<!-- Results -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="results" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
@@ -337,13 +364,13 @@ There were very few changes made to main because we have done most of the initia
 				</div>
 			</section>
 <!-- conclusion -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="Conclusion" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
 							<div class="content">
 								<header class="align-center">
-									<h2>Conclusion, results</h2>
+									<h2>Conclusion</h2>
 								</header>
 								<p style="color:#000">
 									<h3>Overview: Expectations and Results</h3>
@@ -368,7 +395,7 @@ As people who enjoy and appreciate music, from a usability perspective, we thoro
 				</div>
 			</section>
 <!-- Appendices -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="appendix" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
@@ -425,7 +452,7 @@ Various Drum Sounds: https://www.youtube.com/watch?v=5UH7ydJddYI <br>
 				</div>
 			</section>
 <!-- Acks -->
-			<section id="one" class="wrapper style2" style="padding: 3px">
+			<section id="ack" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
