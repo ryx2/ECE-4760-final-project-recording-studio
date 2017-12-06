@@ -62,7 +62,7 @@
 						<div class="box">
 							<div class="content">
 								<div class="image fit" align="middle">
-										<h2>Here's the three of us demoing the project, taken by Bruce Land</h2>
+										<h2>Here's a video of the three of us demoing the project, taken by Bruce Land</h2>
 										<br/>
 									<iframe width="560" height="315" src="https://www.youtube.com/embed/DRMiFPc-xtw" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
 								</div>
@@ -118,18 +118,33 @@
 				</div>
 			</section>
 <!-- Hardware design -->
-			<section id="software" class="wrapper style2" style="padding: 3px">
+			<section id="hardware" class="wrapper style2" style="padding: 3px">
 				<div class="inner">
 					<div>
 						<div class="box">
 							<div class="content">
 								<header class="align-center">
-									<h2>Software design</h2>
+									<h2>Hardware design</h2>
 								</header>
 								
 								<p style="color:#000">
-									<div class="image fit" align="middle"><img src="images/software.jpg" style="width: 50%; height: 50%"></div>
-									To create our sounds, we saved sound files as a single array and wrote the data of the array to the built-in DAC of our development board. The DAC output was connected to the speaker as outlined in the hardware design section. The vast majority of our code was in the file brainstorm.c. In this file, we get input from the user and then play the appropriate sounds using SPI in an ISR. This separation of code into header files made it easier to change our sound files during development as we found ourselves frequently editing the sound array. The following subsections describe in more detail the purpose of each file and how they work.
+									<p>There were 3 major hardware components involved in implementing our project successfully: the button, microphone setup, and speaker circuitry. </p>
+									<ul> 
+									<p><h3>The Button Setup:</h3> We used push buttons for 2 main purposes. 8 buttons were used as our keyboard so the user could play 8 sounds (an octave) for each instrument. 2 more buttons were used in the user interface, one was used solely to toggle the menu options while the other alternated uses between toggling recording and playback or selecting delete depending on the current mode. We enabled pulldown for all the appropriate pins on the board, as we’ve done in previous labs. The schematic below depicts the schematic for connecting a single button to the board. A similar circuit was used for all 10 push buttons.</p>
+									<div style= "text-align:center;"><img src="images/buttonSchematic.jpg" style="width: 10%; height: 10%"></div>
+									<p>Initially when we were trying to find 10 available I/O pins on the PIC32, we struggled a lot. We didn’t pay enough attention to our pin assignments and unknowingly connected 2 buttons to pins that were in use by the TFT. Thus, these buttons were being read as always pressed and our project was outputting constant noise. At first we mistook this sound for actual noise and we thought about trying to filter the noise. However, after we realized our error we essentially tried every possible pin assignment and finally reached a satisfactory pin assignment, as listed below. The keyboard buttons are numbered left to right as they would appear from the user’s perspective. </p>
+									<div style= "text-align:center;"><img src="images/buttonPins.jpg" style="width: 25%; height: 25%"></div>
+									</li>
+									<li><h3>The Microphone Setup:</h3> We used a microphone which we acquired from lab. The microphone was set up to receive input sound from the user and feed it to the board through ADC. The output of the microphone was too small, so we implemented a voltage divider and non-inverting amplifier on the output of the microphone before wiring it to ADC. Since the intended use of our microphone was for a person’s voice, we chose appropriate RC time constants to allow those frequencies to pass. For our amplifier, we started out with a gain of 20, but we chose to increase our gain to 100 so the waveforms would reach their full amplitude from -1.5 to 1.5 volts. This did cause some clipping to occur when sounds were very loud into the microphone, but as long as the mic is used from a few inches away, this is not a problem. An oscilloscope screen depicting the unamplified and amplified microphone output is pictured below. This image does show some clipping because we tested the mic by tapping the mic head, which is very loud in the mic.</p>
+									<div style= "text-align:center;"><img src="images/micAmplified.jpg" style="width: 25%; height: 25%"></div>
+									<p>We were getting an audible amount of noise from our microphone when we recorded its sound output. Our first attempt to fix this was to fix the wiring and isolate the microphone from the power cables as much a possible. Unfortunately this didn’t significantly reduce the noise. We also tried various high-pass and low-pass filters outside the typical speaking voice range to try to eliminate noise. Yet the best result we could achieve was an odd clicking sound in place of the noise. When we fully tested our projects functionality, we discovered the in comparison to the sound from the various instruments, the noise from the microphone recording was very unnoticable, so we decided to leave it as is. The schematic of our finalized microphone circuit is depicted below.</p>
+									<div style= "text-align:center;"><img src="images/microphoneSchematic.jpg" style="width: 25%; height: 25%"></div>
+									<p>Our breadboard with the completed circuit is picturized below, however since this picture was taken after the breadboard was mounted under the Recording Studio, it’s hard to see clearly.</p>
+									<div style= "text-align:center;"><img src="images/microphoneCircuit.jpg" style="width: 35%; height: 35%"></div>
+									</li>
+									<li><h3> The Speaker Setup:</h3> The speaker was connected to a socket which was connected to the output of the DAC, similar to the setup in lab 2. The left and right sides were shorted to produce mono audio. A schematic of our audio socket connection is depicted in Appendix C.</p>
+									</li>
+									</ul>
 								</p>
 								<hr />
 							</div>
@@ -149,7 +164,7 @@
 								</header>
 								
 								<p style="color:#000">
-									<div class="image fit" align="middle"><img src="images/software.jpg" style="width: 50%; height: 50%"></div>
+									<div style= "text-align:center;" align="middle"><img src="images/software.jpg" style="width: 50%; height: 50%"></div>
 									To create our sounds, we saved sound files as a single array and wrote the data of the array to the built-in DAC of our development board. The DAC output was connected to the speaker as outlined in the hardware design section. The vast majority of our code was in the file brainstorm.c. In this file, we get input from the user and then play the appropriate sounds using SPI in an ISR. This separation of code into header files made it easier to change our sound files during development as we found ourselves frequently editing the sound array. The following subsections describe in more detail the purpose of each file and how they work.
 								</p>
 								<hr />
@@ -167,7 +182,7 @@
 								<header class="align-center">
 									<h2>Sound file generation</h2>
 								</header>
-								<div class="image fit" align="middle"><img src="images/sound.jpg" style="width: 50%; height: 50%"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/sound.jpg" style="width: 50%; height: 50%"></div>
 								<p style="color:#000">
 									We searched YouTube for people playing C major scales with guitar, piano, and bass. These notes were then clipped to a relatively short length (about 0.05 seconds), and then put on repeat for playback on the device. For the drums, 8 different diverse drum sounds were selected, about 0.5 seconds each, and when in drum mode they are played once.  
 								</p>
@@ -190,13 +205,13 @@
 								<header class="align-center">
 									<h2>Header Files</h2>
 								</header>
-								<div style= "text-align:center;"><img src="images/wavloc.jpg" style="width: 50%; height: 50%" alt=""></div>
+								<div style= "text-align:center;"><img src="images/wavloc.jpg" style="width: 35%; height: 35%" alt=""></div>
 								<p style="color:#000">
-									The project then plays the sounds as defined in the header files. Our project includes 2 different header files.  
+									<p>Our project includes 2 different header files. The project plays the sounds as defined in the header files. </p>
 									<ul>
-										<li><b>sounds8again2.h:</b> This header file is a MATLAB generated file which contains a very large array called ‘sounds’ of unsigned chars, stored in flash memory. Our project consists of 4 different instruments, each with 8 different sound options. Thus, we have 32 sounds which need to be stored. Our approach was to use a MATLAB script to sample the sounds at the right frequency and scale them down to chars. Then we compiled every single sound in a single array, ordered first by ‘mode’ or instrument, then by button on the keyboard. ‘sounds’ is that array. As you can tell by the name, it took us quite a few iterations of this header file to generate sounds that we were satisfied with. </li>
+										<li><h4>sounds8again2.h:</h4> This header file is a MATLAB generated file which contains a very large array called ‘sounds’ of unsigned chars, stored in flash memory. Our project consists of 4 different instruments , each with 8 different sound options. Thus, we have 32 sounds which need to be stored. Our approach was to use a MATLAB script to sample the sounds at the right frequency and scale them down to chars. Then we compiled every single sound in a single array, ordered first by ‘mode’ or instrument, then by button on the keyboard. ‘sounds’ is that array. As you can tell by the name, it took us quite a few iterations of this header file to generate sounds that we were satisfied with. </li>
 										<li>
-											<b>wavLocNew2.h:</b> This header file is also MATLAB generated and contains 3 things.
+											<h4>wavLocNew2.h:</h4> This header file is also MATLAB generated and contains 3 things.
 											<ul>
 												<li><b>wavStart:</b> a 2 dimensional array of ints which is also stored in flash memory. This array has a size of 4, representing each instrument mode, where each element contains an array of size 8, representing the 8 different keys. Each element of this array contains the beginning index of the respective wave sound in the larger ‘sounds’ array. Thus, when a user presses a key for a certain instrument, we know where the sounds for that key are stored in the large array and can play it back accordingly.
 												</li>
@@ -221,9 +236,9 @@
 						<div class="box">
 							<div class="content">
 								<header class="align-center">
-									<h2>Code breakdown</h2>
+									<h2>Code Breakdown</h2>
 								</header>
-								<b>brainstorm.c</b>
+								<h3><u>brainstorm.c</u></h3>
 								<p style="color:#000">
 									This file does all the computation for our project. We separate it into two threads, an ISR, and main which does some initialization and schedules the two threads. The first thread, the button thread, is responsible for reading input from the user in the form of button presses and then setting the control values appropriately. These control values are used in the ISR and the draw thread to produce the sounds and display the state of the recording studio. We choose to sample our sounds at a rate of 8 kHz, meaning that we also had to trigger the ISR at 8 kHz. This rate gave us a good balance of sound quality and recording length. With a higher sampling rate, we had slightly better sound quality but at the expense of recording length. Because the length of our recording is limited by memory, a faster ISR means that we fill the array faster. Choosing 8 kHz over say 44 kHz gave use more than five times longer to record which is very significant compared to the lost sound quality which was minimal.
 								</p>
@@ -248,23 +263,23 @@
 
 								</p>
 								Within branstorm.c ... <br/>
-								<b>ISR</b>
+								<h4><u>ISR</h4></u>
 								<p>The main task of the ISR is to write the correct output value to the DAC using SPI, however what is involved in this task varies depending on a number of factors, meaning that the code has a lot of if and else statements to determine what needs to be done. First, we clear the interrupt flag, and set soundOut to 0 to remove the data from the previous write. Next, if mode is less than 4, indicating that one of the instruments is selected in the menu, we iterate through the pressed array to determine what buttons are currently pushed. If the mode is 0, 1, or 2, and the button is pressed, we add the element at [waveLoc[mode][i]], our current position for the given sound, in sounds, and then increment waveLoc[mode][i] appropriately. We also shift the output of sound one bit left to amplify the volume of the system. The increment is made slightly more complicated because we store all of the sounds as a single array, but we essentially check if we have reached the end of that sound and if so reset to the beginning, otherwise increment by one. We have to do essentially the same thing if we are in mode 3, however we only want to do this if the drum sound has not completed already. This is because for the drums we only want to play the sound once for each button hit. Additionally, when we increment wavLoc for the drum sounds we must also set drumPlay[i] when we reset the sound, indicating that we should not play it again. Additionally, we shift the drum sounds an extra bit left because the raw sound files were quieter than the tones. All together, here is the block of code:
-								<div class="image fit" align="middle"><img src="images/isr-top.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/isr-top.jpg" style="width: 75%; height: 75%"></div>
 								</p>
 								<p>The above blocks of code are how we set soundOut based on button presses, but the ISR must also take action depending on the values of recording and playback. If we are recording, we need to add the result of pressing buttons, and if we are in user mode we add the results of reading from the microphone. We divide the reading by 2 to put it closer in volume to the other sounds, while still allowing it to be heard. If we are currently playing back, we just need to increment soundOut but the recording wave. The final condition we check applies if we are either recording or playing back. If we are doing either, we need to increment rInd. If it reaches the maximum size of the record wave, we reset it to 0 and also set recording to 0. Finally, if we reached the end of the array we also check if readyVal and playback are set. If they are that indicates that we need to record in the next playback so we set recording and reset readyVal. The final task of the ISR is to actually send the data set in soundOut. We do this by setting the chip select low (it is active low), giving the command to write the data, waiting for the data to be sent, and then setting chip select high again. Put together, the code becomes this:</p>
-								<div class="image fit" align="middle"><img src="images/isr-bottom.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/isr-bottom.jpg" style="width: 65%; height: 50%"></div>
 								<p>Throughout the testing and debugging of our project several changes were made to original code to arrive at the final product described above. One bug we had was that drum sounds seemed to start at random points in the sound array. We found that the cause of this was that we were incrementing the wave location even when the drum sound had already been played. We also had an issue where the recorded sounds would get louder as you layered additional recordings even when there were no additional sounds. We found that the problem was that we checked if we were recording and playing back in the wrong order, so we were accidentally doubling the recording wave. We also had to make small changes to how incrementing worked after we switched our design for have all of the sounds in a single array. </p>
-								<b>Button Thread</b>
+								<h4><u>Button Thread</u></h4>
 								<p>The main job of the button thread is to read the input pins connected to the buttons and set the control signals for the ISR and the draw thread. It also writes to the TFT when the user should prepare to start recording. We also however have to debounce the buttons. Instead of using a state machine like we did in Lab 2, we opted for a simpler implementation for this project which was easier to use and also gave reliable results when user testing. For each button, we read the ports at the beginning of the thread, then yield for 30 ms, giving the buttons enough time to settle if they were bouncing. If the reading after the yield is the same as before, we consider this to be the state of the button. If it is different, we leave the value unchanged. For the recording and menu buttons however, we only want to register a press if the button went from low to high because we want each press to be registered exactly one time, so we only set pressed if the reading is greater than the old reading.</p>
-								<div class="image fit" align="middle"><img src="images/button1.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/button1.jpg" style="width: 50%; height: 50%"></div>
 								<p>We also set drumPlay based on reading the ports. In the same way that we only want to read a menu button press once, we want to set drumPlay to 0 exactly once, each time the button is pressed while in drum mode. If the button is not pressed again, we leave it unchanged.</p>
-								<div class="image fit" align="middle"><img src="images/button2.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/button2.jpg" style="width: 50%; height: 50%"></div>
 								<p>Next, we have to set control signals based on the pressed buttons. If the menu button was pressed, we mode and arrPos, looping back if they hit their maximum values (ie the button was pressed with the last menu option selected). Next, we set the control values based on if the record button is pressed. The record button can have a number of different functions. If delete is selected in the menu, it sets the entire record wave to 0’s, effectively deleting the recording. If playback is selected in the menu, it toggles playback, either to on or off. If neither of these are selected in the menu, then pressing the record button should do one of two things. If playback is on, then is should set readyVar and print “Get ready!” in the bottom right of the screen. This is eventually translates to setting record once the current playback has completed. If playback is not on, then pressing record while not already recording starts a countdown from 3 until recording starts. We first set readyVal to 1, draw each number, yield for 400 ms, then draw over it in black and draw the next number. After erasing the 1, we reset readyVar and turn recording on. Lastly, we display the recording status bar or the get read text with some prints, if in the correct playback or recording mode.</p>
-								<div class="image fit" align="middle"><img src="images/button3.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/button3.jpg" style="width: 50%; height: 50%"></div>
 								<p>While debugging this thread, our first issue was fixing it so that drums would only play once. Our original design didn’t account for holding down the drum button. This resulted in us adding the drumPlay array to our design, which also required some changes in the ISR. We also had to make modifications as we changed the way we wanted playback and record to interact. Initially they didn’t synchronize automatically, so you could start recording at any point in the playback. We decided that this was more of a limitation than a feature because in almost all circumstances the user would want all of the recordings to line up. This led to having a timed “get ready”, where the progress bar would stop and after a short period of time the recording and playback would start. This also make it difficult to synchronize the recording and playback because it was difficult to anticipate when the recording would start. The system that we have now improves upon this by using the readyVar. This allows the current playback to complete and then the recording begins immediately with the next playback. This allows the user ample time to prepare to play after hitting record and also allows them to get a feel for the tempo of the playback and layer onto it seamlessly. Each of these progressive design changes required changed with how we handled the pressing of the record button and took a significant portion of the time we spent debugging.
 								We also spent significant time mapping the right input pins to the correct indexes of pressed. While the PIN_x defines made modifying the code easier, it added a level of abstraction that made it difficult to wrap our heads around why pressing which button created the tone that it did. We kept thinking that PIN_0 was the leftmost button when really PIN_0 corresponded to an A (the pitch) and we had to connect it to the input pin connected to the leftmost button.</p>
-								<b>Main</b>
+								<h4><u>Main</u></h4>
 								<p>We only use main to do a few initializations that only need to be completed once. These set up the SPI and ADC for use in the other pieces of the program, write the menu options to the TFT, configure our input pins for use with the push buttons, and initialize the timer for the ISR. After doing these initializations it schedules the protothreads to run in round-robin style.
 								First, we initialize the timer 2 with a refresh rate of 8 kHz, (we give it the value 5000 because it divides the clock rate of 40 MHz by the input value), and configure it to call our ISR when it refreshes. We also have to clear the interrupt flag initially.
 								</p>
@@ -352,9 +367,9 @@ There were very few changes made to main because we have done most of the initia
 								</p>
 								<p>There was also some oscilloscope testing. This was the original pointer to us that our clicky noises that we were getting were indexing issues, because of the way the sudden dropoff occurred in wave. We also had an issue with too much audio played at the same time, and clipping out.</p>
 								Here is a badly indexed wave form on the oscilloscope:
-								<div class="image fit" align="middle"><img src="images/clipping.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/clipping.jpg" style="width: 35%; height: 35%"></div>
 								Here is a good one
-								<div class="image fit" align="middle"><img src="images/regular.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/regular.jpg" style="width: 35%; height: 35%"></div>
 								<p>We did not have any safety constraints in our design. Even at max volume, the device is not able to play music that is that loud on ordinary household speakers, so there is no risk to hearing loss. </p>
 								<p>We believe that our device is usable to people who have a sense of hearing, and good motor control of their fingers. The buttons were hot-glued onto stiff cardboard to avoid their bouncing or jiggling when pushed, and they are very stable. </p>
 								<hr />
@@ -409,13 +424,17 @@ The group approves the video for inclusion on the course YouTube channel.
 </p>
 								<h3>Appendix B: Commented Program Listing</h3>
 								<p>The code file is available at <a href="https://github.com/ryx2/ECE-4760-final-project-recording-studio/tree/master/Project%20Code">https://github.com/ryx2/ECE-4760-final-project-recording-studio/tree/master/Project%20Code</a></p>
-								<h3>Appendix C: Schmatics</h3>
-								<div class="image fit" align="middle"><img src="images/MicrophoneSchematic.jpg"></div>
-								<div class="image fit" align="middle"><img src="images/buttonSchematic.jpg"></div>
-								Each of the 10 buttons we used was connected to various available I/O pins on the PIC32 in a similar fashion.
-								<div class="image fit" align="middle"><img src="images/DACschematic.jpg"></div>
+								<h3>Appendix C: Schematics</h3>
+								<p> Microphone Circuit; </p>
+								<div style= "text-align:center;" align="middle"><img src="images/MicrophoneSchematic.jpg" style="width: 35%; height: 35%"></div>
+
+								<h4>Button Circuit</h4>
+								<div style= "text-align:center;" align="middle"><img src="images/buttonSchematic.jpg" style="width: 10%; height: 10%"></div>
+								<p>Each of the 10 buttons we used was connected to various available I/O pins on the PIC32 in a similar fashion.</p>
+								<h4>Audio Socket Circuit</h4>
+								<div style= "text-align:center;" align="middle"><img src="images/DACschematic.jpg" style="width: 10%; height: 10%"></div>
 								<h3>Appendix D: Parts used with costs</h3>
-								<div class="image fit" align="middle"><img src="images/parts.jpg"></div>
+								<div style= "text-align:center;" align="middle"><img src="images/parts.jpg" style="width: 40%; height: 40%"></div>
 								Total spent on parts is $54.20 plus a few cents for the small components.
 								<h3>Appendix E: Work distribution</h3>
 								<p>The group worked together in lab visits or at Cornell's very own eHub study space, with one person programming and the other two discussing/planning. For the website report, Brandon and Radhika contributed more toward the content while Raymond built the site. </p>
